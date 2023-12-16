@@ -4,6 +4,7 @@ version: '3.8'
 services:
   db:
     image: postgres:13-alpine
+    container_name: database
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=$DB_USER
@@ -21,8 +22,9 @@ services:
 
   web:
     build:
-      context: ./WebApi
+      context: web
       dockerfile: Dockerfile
+    container_name: web
     restart: always
     command: bash -c "alembic revision --autogenerate && alembic upgrade head && uvicorn api:app --host 0.0.0.0 --port 8000"
     env_file:
@@ -32,10 +34,11 @@ services:
     networks:
       - app
 
-  simulator:
+  client:
     build:
-      context: ./ClientSimulator
+      context: client
       dockerfile: Dockerfile
+    container_name: client
     restart: always
     command: bash -c "python3 -m client_simulator"
     env_file:
@@ -48,10 +51,11 @@ services:
       - ./data/client_logs:/app/logs
 
 
-  background:
+  worker:
     build:
-      context: ./BackgroundProcessing
+      context: worker
       dockerfile: Dockerfile
+    container_name: worker
     restart: always
     command: bash -c "python3 -m background_processing"
     deploy:
@@ -59,7 +63,7 @@ services:
     env_file:
       - .env
     depends_on:
-      - simulator
+      - client
     networks:
       - app
     volumes:

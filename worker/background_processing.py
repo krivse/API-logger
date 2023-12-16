@@ -39,7 +39,7 @@ def save_data(data):
 
 
 def data_request():
-    """Получение данных с WebApi сервиса."""
+    """Получение данных с web сервиса."""
     host = os.getenv('HOST')
     port = os.getenv('PORT')
     try:
