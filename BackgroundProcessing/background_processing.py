@@ -9,30 +9,33 @@ import fcntl
 
 load_dotenv()
 
-
 logging.basicConfig(
-        level=logging.INFO,
-        format='[%(levelname) 5s/%(asctime)s %(filename)s %(lineno)d] %(name)s: %(message)s]',
-    )
+    level=logging.INFO,
+    format='[%(levelname) 5s/%(asctime)s %(filename)s %(lineno)d] %(name)s: %(message)s]',
+)
 
 
 def save_data(data):
     """Запись данных в файл."""
     file_path = f"{os.path.dirname(os.path.abspath(__file__))}/logs/log.json"
     # Открываем существующий файл и считываем данные
-    with open(file_path, 'r+') as file:
-        # Устанавливаем файл в режим блокировки
-        fcntl.flock(file, fcntl.LOCK_EX)
-        # Проверяем, существует ли файл или является ли пустым
-        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+        with open(file_path, 'r+') as file:
+            # Устанавливаем файл в режим блокировки
+            fcntl.flock(file, fcntl.LOCK_EX)
+            # Проверяем, существует ли файл или является ли пустым
             file_data = json.load(file)
             file_data.append(data)
             # Устанавливаем смещение относительно начала файла
             file.seek(0)
             json.dump(file_data, file, indent=4)
-        else:
+            fcntl.flock(file, fcntl.LOCK_UN)
+
+    else:
+        with open(file_path, 'a+') as file:
+            fcntl.flock(file, fcntl.LOCK_EX)
             json.dump(data, file, indent=4)
-        fcntl.flock(file, fcntl.LOCK_UN)
+            fcntl.flock(file, fcntl.LOCK_UN)
 
 
 def data_request():
