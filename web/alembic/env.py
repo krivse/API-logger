@@ -33,7 +33,7 @@ config.set_main_option('sqlalchemy.url', str(url))
 import sys
 
 # sys.path = ['', '..'] + sys.path[1:]
-# from webapp import models  # Настройка импорта для локальной работы файла, вне контейнера
+# from web import models  # Настройка импорта для локальной работы файла, вне контейнера
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
