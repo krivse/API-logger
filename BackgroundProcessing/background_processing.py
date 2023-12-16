@@ -19,26 +19,20 @@ logging.basicConfig(
 def save_data(data):
     """Запись данных в файл."""
     file_path = f"{os.path.dirname(os.path.abspath(__file__))}/logs/log.json"
-
-    # Открываем файл в режиме блокировки
-    # file_lock = open(file_path, 'a')
-    # fcntl.flock(file_lock, fcntl.LOCK_EX)
-    # Проверяем, существует ли файл
-    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
-        # Открываем существующий файл и считываем данные
-        with open(file_path, 'r') as file:
-            json_data = json.load(file)
-    else:
-        # Создаем пустой список для данных, если файл не существует
-        json_data = []
-    # Добавляем новую запись в список с данными
-    json_data.append(data[0])
-    # Записываем данные в файл
-    with open(file_path, 'w', encoding='UTF-8') as file:
-        json.dump(json_data, file, ensure_ascii=False, indent=4)
-        # Снимаем блокировку с файла и закрываем его
-        # fcntl.flock(file_lock, fcntl.LOCK_UN)
-        # file_lock.close()
+    # Открываем существующий файл и считываем данные
+    with open(file_path, 'r+') as file:
+        # Устанавливаем файл в режим блокировки
+        fcntl.flock(file, fcntl.LOCK_EX)
+        # Проверяем, существует ли файл или является ли пустым
+        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+            file_data = json.load(file)
+            file_data.append(data)
+            # Устанавливаем смещение относительно начала файла
+            file.seek(0)
+            json.dump(file_data, file, indent=4)
+        else:
+            json.dump(data, file, indent=4)
+        fcntl.flock(file, fcntl.LOCK_UN)
 
 
 def data_request():
