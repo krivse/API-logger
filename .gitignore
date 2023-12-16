@@ -151,7 +151,7 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-WebApi/alembic/versions/
+web/alembic/versions/
 .idea
 СlientSimulator/logs/*.txt
 BackgroundProcessing/logs/*.json
