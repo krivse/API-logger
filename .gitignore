@@ -151,6 +151,11 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+WebApi/alembic
+WebApi/alembic.ini
+.idea
+СlientSimulator/logs/*.txt
+BackgroundProcessing/logs/*.json
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
