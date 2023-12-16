@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 
 
 import models  # Настройка импорта для работы файла внутри контейнере
-# from WebApi import models  # Настройка импорта для локальной работы файла, вне контейнера
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 
@@ -33,7 +32,8 @@ config.set_main_option('sqlalchemy.url', str(url))
 
 import sys
 
-sys.path = ['', '..'] + sys.path[1:]
+# sys.path = ['', '..'] + sys.path[1:]
+# from WebApi import models  # Настройка импорта для локальной работы файла, вне контейнера
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:

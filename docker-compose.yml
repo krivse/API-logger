@@ -63,7 +63,7 @@ services:
     networks:
       - app
     volumes:
-      - ./data/background_log/:/app/logs
+      - ./data/background_log:/app/logs
 
 
 networks:
